@@ -1,16 +1,13 @@
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
-
+import Register from './components/register'
 const inter = Inter({ subsets: ['latin'] })
-
+import Link from 'next/link'
+import Navbar from './components/Navbar'
 export default function Home() {
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-     <h1>Next.js proejsi
-      
-     </h1>
+    <main>
+      <Navbar/>
     </main>
   )
 }
