@@ -1,12 +1,14 @@
 /* 
   //* Info:  
-    This api accept params in post request of username, email, and password;
+    This api accept POST request with params in post request of username, email, and password;
     adds all the details to the users collection in the db;
     it validates the uniqueness of email and username;
     errors: comes with a error filed and a message filed where error is a brief
       info of the error and the message is a described error message 
-*/
 
+    Todo: Upload the user profile photo to cloud and store hash password!
+
+*/
 
 import { DBUrl } from "@/lib/db";
 import { UserModel } from "@/lib/models/user";

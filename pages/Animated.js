@@ -1,5 +1,5 @@
 // components/AnimatedComponent.js
-"use client"
+"use client";
 import { useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 
