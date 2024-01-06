@@ -7,6 +7,7 @@
       info of the error and the message is a described error message 
 */
 
+
 import { DBUrl } from "@/lib/db";
 import { UserModel } from "@/lib/models/user";
 import mongoose from "mongoose";
