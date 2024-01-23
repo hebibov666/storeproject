@@ -8,7 +8,7 @@ function Signup() {
     email:"",
     password:"",
   }
-  const onSubmit = async (values, e) => {
+  const onSubmit = async(values, e) => {
     // const formdata = new FormData();
     // formdata.append("username", values.username);
     // formdata.append("email", values.email);
@@ -21,7 +21,7 @@ function Signup() {
     };
 
     try {
-      const response = await axios.post("/api/adduser", payload);
+      const response =await axios.post("/api/adduser", payload);
       if (!response.status === 200) {
         console.log("Xeta");
       }
@@ -31,17 +31,10 @@ function Signup() {
     }
   };
 
-const validate=values=>{
-  const errors={}
-  if(!values.username){
-    errors.username="Please enter username"
-  }
-}
        
   const formik=useFormik({
     initialValues,
     onSubmit,
-    validate,
    
   })
 
