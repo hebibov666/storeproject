@@ -67,8 +67,6 @@ export default async function handler(req, res) {
       res
         .status(500)
         .json({ message: "Database connection error", error: error.message });
-    } finally {
-      await mongoose.disconnect();
     }
   } else {
     res.status(400).json({
