@@ -1,36 +1,40 @@
 import Link from "next/link";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import { useFormik } from "formik";
-import axios from "axios"
+import axios from "axios";
 function Signup() {
-  const initialValues={
-    username:"",
-    email:"",
-    password:"",
-  }
-  const onSubmit=async(values,e)=>{
-    const formdata=new FormData()
-    formdata.append("username",values.username)
-    formdata.append("email",values.email)
-    formdata.append("password",values.password)
-    try{
-      const response= await axios.post("/api/adduser",formdata)
-      if(!response.status===200){
-        console.log("Xeta")
+  const initialValues = {
+    username: "",
+    email: "",
+    password: "",
+  };
+  const onSubmit = async (values, e) => {
+    // const formdata = new FormData();
+    // formdata.append("username", values.username);
+    // formdata.append("email", values.email);
+    // formdata.append("password", values.password);
+
+    const payload = {
+      username: values.username,
+      email: values.email,
+      password: values.password,
+    };
+
+    try {
+      const response = await axios.post("/api/adduser", payload);
+      if (!response.status === 200) {
+        console.log("Xeta");
       }
-      console.log(response)
-    }catch(error){
-      console.log(error)
+      console.log(response);
+    } catch (error) {
+      console.log(error);
     }
-        }
+  };
 
-
-       
-  const formik=useFormik({
+  const formik = useFormik({
     initialValues,
     onSubmit,
-   
-  })
+  });
   return (
     <div className="banner w-full overflow-hidden pt-[60px] pb-[50px] flex items-center justify-center h-[100vh]">
       <div className=" relative overflow-hidden flex bg-[#F8F8F8] p-[20px] flex-col items-center gap-[30px] w-[40%]">
@@ -45,9 +49,9 @@ function Signup() {
         </div>
         <div className="flex flex-col items-center w-full gap-[20px]">
           <form
-          onSubmit={formik.handleSubmit}
-          action="/api/adduser"
-          method="POST"
+            onSubmit={formik.handleSubmit}
+            // // action="/api/adduser"
+            // method="POST"
             className="flex z-[1] flex-col gap-[20px] w-full items-center"
           >
             <label
