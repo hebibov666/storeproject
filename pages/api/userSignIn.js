@@ -2,7 +2,8 @@
   //* Info:  
     This api accept POST request with params username, and password;
     it verifies the password to the existing user with the same username
-    If the password is same it returns a 200 status code
+    If the password is same it returns a 200 status code with an object with message and
+    data which contains email and username of the user
     if the password is wrong it returns a 401 unauthorized error
     all the errors are returned with error name and message;
 
@@ -45,7 +46,13 @@ export default async function handler(req, res) {
         });
       }
 
-      res.status(200).json({ message: "User successfully verified" });
+      res.status(200).json({
+        message: "User successfully verified",
+        data: {
+          email: existingUser.email,
+          username: existingUser.username,
+        },
+      });
     } catch (error) {
       console.log(error);
       res
