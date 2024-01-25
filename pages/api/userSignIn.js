@@ -13,11 +13,12 @@
 import { DBUrl } from "@/lib/db";
 import { UserModel } from "@/lib/models/user";
 import mongoose from "mongoose";
+import * as bcrypt from "bcrypt";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
     const { password, username } = req.body;
-    console.log(password, username);
+
     if (password === "" || username === "" || !password || !username) {
       return res
         .status(406)
@@ -39,7 +40,12 @@ export default async function handler(req, res) {
         });
       }
 
-      if (existingUser.password != password) {
+      const isPasswordCorrect = await bcrypt.compare(
+        password,
+        existingUser.password
+      );
+
+      if (!isPasswordCorrect) {
         return res.status(401).json({
           error: "Password is invalid",
           message: `Password for ${username} is not valid!`,
