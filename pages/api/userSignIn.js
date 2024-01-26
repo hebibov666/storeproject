@@ -13,11 +13,13 @@
 import { DBUrl } from "@/lib/db";
 import { UserModel } from "@/lib/models/user";
 import mongoose from "mongoose";
+import * as bcrypt from "bcrypt";
+import * as jwt from "jsonwebtoken";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
     const { password, username } = req.body;
-    console.log(password, username);
+
     if (password === "" || username === "" || !password || !username) {
       return res
         .status(406)
@@ -39,18 +41,37 @@ export default async function handler(req, res) {
         });
       }
 
-      if (existingUser.password != password) {
+      const isPasswordCorrect = await bcrypt.compare(
+        password,
+        existingUser.password
+      );
+
+      if (!isPasswordCorrect) {
         return res.status(401).json({
           error: "Password is invalid",
           message: `Password for ${username} is not valid!`,
         });
       }
 
+      if (!process.env.JWT_SECRET) {
+        res.status(500).json({
+          message: "JWT_SECRET is not defined in the .env file",
+        });
+      }
+      const token = jwt.sign(
+        { email: existingUser.email, username: existingUser.username },
+        process.env.JWT_SECRET,
+        {
+          algorithm: "RS512",
+        }
+      );
+
       res.status(200).json({
         message: "User successfully verified",
         data: {
           email: existingUser.email,
           username: existingUser.username,
+          token: token,
         },
       });
     } catch (error) {
