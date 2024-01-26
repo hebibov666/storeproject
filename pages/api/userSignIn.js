@@ -14,6 +14,7 @@ import { DBUrl } from "@/lib/db";
 import { UserModel } from "@/lib/models/user";
 import mongoose from "mongoose";
 import * as bcrypt from "bcrypt";
+import * as jwt from "jsonwebtoken";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
@@ -52,11 +53,25 @@ export default async function handler(req, res) {
         });
       }
 
+      if (!process.env.JWT_SECRET) {
+        res.status(500).json({
+          message: "JWT_SECRET is not defined in the .env file",
+        });
+      }
+      const token = jwt.sign(
+        { email: existingUser.email, username: existingUser.username },
+        process.env.JWT_SECRET,
+        {
+          algorithm: "RS512",
+        }
+      );
+
       res.status(200).json({
         message: "User successfully verified",
         data: {
           email: existingUser.email,
           username: existingUser.username,
+          token: token,
         },
       });
     } catch (error) {
