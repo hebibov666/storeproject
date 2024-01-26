@@ -1,26 +1,27 @@
 import Link from "next/link";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import { useFormik } from "formik";
+import * as Yup from "Yup"
 import axios from "axios";
+import { useState } from "react";
+import CircularProgress from '@mui/material/CircularProgress';
 function Signup() {
+  const [loading,setLoading]=useState(false)
+  const [error,setError]=useState(null)
   const initialValues={
     username:"",
     email:"",
     password:"",
   }
   const onSubmit = async(values, e) => {
-    // const formdata = new FormData();
-    // formdata.append("username", values.username);
-    // formdata.append("email", values.email);
-    // formdata.append("password", values.password);
-
-    const payload = {
+   const payload = {
       username: values.username,
       email: values.email,
       password: values.password,
     };
 
     try {
+      setLoading(true)
       const response =await axios.post("/api/adduser", payload);
       if (!response.status === 200) {
         console.log("Xeta");
@@ -28,14 +29,22 @@ function Signup() {
       console.log(response);
     } catch (error) {
       console.log(error);
+      setError(error.response.data.message)
+    }finally{
+      setLoading(false)
     }
   };
 
+  const validationSchema= Yup.object({
+    username:Yup.string().required("Required"),
+    email:Yup.string().email("Invalid email adress").required("Required"),
+    password:Yup.mixed().required("Required")
+  })
        
   const formik=useFormik({
     initialValues,
     onSubmit,
-   
+   validationSchema,
   })
 
   return (
@@ -64,6 +73,7 @@ function Signup() {
               Profile photo:
             </label>
             <input type="file" id="fileInput" name="file" className="hidden" />
+            {error && <p className="w-full pl-[5px]">{error}</p>}
             <input
               type="text"
               placeholder="User name"
@@ -72,6 +82,7 @@ function Signup() {
               name="username"
               className="p-2 w-full border-2 border-[#F0F0F0] rounded-[7px] outline-none h-[40px]"
             ></input>
+            {formik.errors.username ? <p className="w-full pl-[5px] text-red-400 mt-[-15px]">{formik.errors.username}</p> : null}
             <input
               type="email"
               placeholder="Email address"
@@ -80,6 +91,7 @@ function Signup() {
               name="email"
               className="p-2 w-full  border-2 border-[#F0F0F0] rounded-[7px] outline-none h-[40px]"
             ></input>
+               {formik.errors.email ? <p className="w-full pl-[5px] text-red-400 mt-[-15px]">{formik.errors.email}</p> : null}
             <input
               type="password"
               placeholder="Password"
@@ -88,11 +100,12 @@ function Signup() {
               name="password"
               className="p-2 w-full border-2 border-[#F0F0F0] rounded-[7px] outline-none h-[40px]"
             ></input>
+               {formik.errors.password ? <p className="w-full pl-[5px] text-red-400 mt-[-15px]">{formik.errors.password}</p> : null}
             <button
               type="submit"
-              className="p-2 h-[45px] w-full bg-[#0B5CFF] font-bold border-2 border-white text-white  rounded-[7px] outline-none"
+              className="p-2 h-[45px] flex items-center justify-center w-full bg-[#0B5CFF] font-bold border-2 border-white text-white  rounded-[7px] outline-none"
             >
-              Create account
+             {loading===true ? <CircularProgress className="text-white mt-[-10px]" fontSize="small"/> : <h1>Create account</h1>}
             </button>
           </form>
           <div className="flex gap-[10px] w-full justify-end pr-2">

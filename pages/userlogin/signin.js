@@ -1,8 +1,11 @@
 import Link from "next/link";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
-import { useFormik } from "formik";
+import { Formik, useFormik } from "formik";
 import axios from "axios"
+import { useRouter } from "next/router";
+import * as Yup from "Yup"
 function Signin() {
+  const router=useRouter()
   const initialValues={
     username:"",
     password:"",
@@ -17,15 +20,23 @@ function Signin() {
       if(!response.status===200){
         console.log("error")
       }
-      console.log(response)
+    localStorage.setItem("user", JSON.stringify(response.data.data.username));
+    router.push("/userprofile/profile")
+    
     }
     catch(error){
       console.log(error)
     }
   }
+
+  const validationSchema=Yup.object({
+    username:Yup.string().required("Please enter username"),
+    password:Yup.mixed().required("Please enter password")
+  })
   const formik=useFormik({
     initialValues,
     onSubmit,
+    validationSchema,
   })
   return (
     <div className="banner w-full overflow-hidden pt-[60px] pb-[50px] flex items-center justify-center h-[100vh]">
@@ -52,6 +63,7 @@ function Signin() {
               name="username"
               className="p-2 w-full border-2 border-[#F0F0F0] rounded-[7px] outline-none h-[40px]"
             ></input>
+            {formik.errors.username ? <p className="w-full pl-[5px] text-red-400 mt-[-15px]">{formik.errors.username}</p> : null}
             <input
               type="password"
               placeholder="Password"
@@ -60,6 +72,7 @@ function Signin() {
               name="password"
               className="p-2 w-full border-2 border-[#F0F0F0] rounded-[7px] outline-none h-[40px]"
             ></input>
+              {formik.errors.password ? <p className="w-full pl-[5px] text-red-400 mt-[-15px]">{formik.errors.password}</p> : null}
             <button
               type="submit"
               className="p-2 w-full bg-[#0B5CFF] font-bold border-2 border-white text-white  rounded-[7px] outline-none h-[40px]"
