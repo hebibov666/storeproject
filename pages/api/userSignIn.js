@@ -3,7 +3,7 @@
     This api accept POST request with params username, and password;
     it verifies the password to the existing user with the same username
     If the password is same it returns a 200 status code with an object with message and
-    data which contains email and username of the user
+    data which contains email and username of the user and a JWT token
     if the password is wrong it returns a 401 unauthorized error
     all the errors are returned with error name and message;
 
@@ -59,7 +59,11 @@ export default async function handler(req, res) {
         });
       }
       const token = jwt.sign(
-        { email: existingUser.email, username: existingUser.username },
+        {
+          email: existingUser.email,
+          username: existingUser.username,
+          id: existingUser._id.toString(),
+        },
         process.env.JWT_SECRET,
         {
           algorithm: "RS512",
