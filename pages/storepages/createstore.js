@@ -3,7 +3,7 @@ import { Formik, useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "Yup"
 function CreateStore() {
-
+    const phoneRegExp = /^\+994[0-9]{9}$/;
     const initialValues={
         storeName:"",
         storeContactNumber:"",
@@ -12,7 +12,9 @@ function CreateStore() {
     }
     const validationSchema=Yup.object({
         storeName: Yup.string().required("Please enter storename"),
-        storeContactNumber: Yup.number().required("required"),
+        storeContactNumber: Yup.string()
+        .matches(phoneRegExp, 'Geçerli bir Azerbaycan telefon numarası giriniz')
+        .required('Telefon numarası zorunludur'),
         storeDescription: Yup.string().required("required")
     })
     const formik=useFormik({
@@ -30,20 +32,24 @@ function CreateStore() {
               <input
                 type="text"
                 placeholder="Store name"
-                onChange={formik.values.storeName}
+                onChange={formik.handleChange}
+                value={formik.values.storeName}
                 name="storeName"
                 className="p-2  border-2 border-[#F0F0F0] rounded-[7px] outline-none h-[40px]"
               ></input>
               {formik.errors.storeName ? <p className="text-red-400 pl-[5px] mt-[-15px]">{formik.errors.storeName}</p> : null}
               <input
                 type="number"
-                onChange={formik.values.storeContactNumber}
+                onChange={formik.handleChange}
+                value={formik.values.storeContactNumber}
                 name="storeContactNumber"
                 placeholder="Store contact number"
                 className="p-2  border-2 border-[#F0F0F0] rounded-[7px] outline-none h-[40px]"
               ></input>
+                    {formik.errors.storeContactNumber ? <p className="text-red-400 pl-[5px] mt-[-15px]">{formik.errors.storeContactNumber}</p> : null}
               <select 
-                 onChange={formik.values.storeType}
+                 onChange={formik.handleChange}
+                 value={formik.values.storeType}
                  name="storeType"
               className="p-2 text-[#a9a9a9] border-2 border-[#F0F0F0] rounded-[7px] outline-none h-[40px]">
                 <option hidden>Select store type</option>

@@ -12,17 +12,17 @@ function Signup() {
     username:"",
     email:"",
     password:"",
+    file:null,
   }
   const onSubmit = async(values, e) => {
-   const payload = {
-      username: values.username,
-      email: values.email,
-      password: values.password,
-    };
-
+  const formData=new FormData()
+  formData.append("file", values.file); // Dosyayı FormData'ya ekleyin
+  formData.append("username", values.username);
+  formData.append("email", values.email);
+  formData.append("password", values.password);
     try {
       setLoading(true)
-      const response =await axios.post("/api/adduser", payload);
+      const response =await axios.post("/api/adduser",formData );
       if (!response.status === 200) {
         console.log("Xeta");
       }
@@ -72,7 +72,11 @@ function Signup() {
             >
               Profile photo:
             </label>
-            <input type="file" id="fileInput" name="file" className="hidden" />
+            <input type="file" 
+            id="fileInput" 
+            name="file"
+            onChange={(event) => formik.setFieldValue("file", event.currentTarget.files[0])}
+             className="hidden" />
             {error && <p className="w-full pl-[5px]">{error}</p>}
             <input
               type="text"

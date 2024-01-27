@@ -20,7 +20,12 @@ function Signin() {
       if(!response.status===200){
         console.log("error")
       }
-    localStorage.setItem("user", JSON.stringify(response.data.data.username));
+           // API'den gelen JWT token'ını alın
+var jwtToken = response.data.data.token;
+
+// Cookie'yi oluşturun
+document.cookie = "jwtToken=" + jwtToken + "; expires=Thu, 01 Jan 2026 00:00:00 UTC; path=/";
+ localStorage.setItem("user", JSON.stringify(response.data.data.username));
     router.push("/userprofile/profile")
     
     }
