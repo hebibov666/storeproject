@@ -66,3 +66,10 @@ background: white;
   width: 40px !important;
   height: 40px !important;
 }
+.dropdown{
+  background: white !important;
+}
+.MuiPopover-root .MuiMenu-root .MuiModal-root{
+  width: 100% !important;
+  overflow: hidden !important;
+}

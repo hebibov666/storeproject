@@ -20,9 +20,9 @@ function Dropdown(){
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
-          className='dropdown text-black bg-white hover:text-white font-bold'
+          className='dropdown text-black bg-white hover:text-black font-bold'
         >
-          Register
+          Account
         </Button>
         <Menu
           id="demo-positioned-menu"
@@ -42,6 +42,9 @@ function Dropdown(){
           <MenuItem onClick={handleClose}>Login</MenuItem>
         <Link href="/userlogin/signup">
         <MenuItem onClick={handleClose}>Register</MenuItem>
+        </Link>
+        <Link href="/storepages/createstore">
+        <MenuItem onClick={handleClose}>Create store</MenuItem>
         </Link>
         </Menu>
       </div>

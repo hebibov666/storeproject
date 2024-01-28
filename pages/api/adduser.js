@@ -13,6 +13,7 @@
 import { DBUrl } from "@/lib/db";
 import { UserModel } from "@/lib/models/user";
 import mongoose from "mongoose";
+import * as bcrypt from "bcrypt";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
@@ -54,17 +55,19 @@ export default async function handler(req, res) {
         });
       }
 
-      // Create a new user instance
-      const newUser = new UserModel({ username, email, password });
+      const passwordSalt = await bcrypt.genSalt(10);
+      const hash = await bcrypt.hash(password, passwordSalt);
 
-      // Save the user to MongoDB
+      // Create a new user instance
+      const newUser = new UserModel({ username, email, password: hash });
       await newUser.save();
 
       res.status(200).json({ message: "User successfully created" });
     } catch (error) {
+      console.log(error);
       res
         .status(500)
-        .json({ message: "Internal server error", error: error.message });
+        .json({ message: "Database connection error", error: error.message });
     }
   } else {
     res.status(400).json({

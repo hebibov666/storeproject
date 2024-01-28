@@ -2,7 +2,8 @@
   //* Info:  
     This api accept POST request with params username, and password;
     it verifies the password to the existing user with the same username
-    If the password is same it returns a 200 status code
+    If the password is same it returns a 200 status code with an object with message and
+    data which contains email and username of the user and a JWT token
     if the password is wrong it returns a 401 unauthorized error
     all the errors are returned with error name and message;
 
@@ -12,11 +13,13 @@
 import { DBUrl } from "@/lib/db";
 import { UserModel } from "@/lib/models/user";
 import mongoose from "mongoose";
+import * as bcrypt from "bcrypt";
+import * as jwt from "jsonwebtoken";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
     const { password, username } = req.body;
-    console.log(password, username);
+
     if (password === "" || username === "" || !password || !username) {
       return res
         .status(406)
@@ -38,15 +41,49 @@ export default async function handler(req, res) {
         });
       }
 
-      if (existingUser.password != password) {
+      const isPasswordCorrect = await bcrypt.compare(
+        password,
+        existingUser.password
+      );
+
+      if (!isPasswordCorrect) {
         return res.status(401).json({
           error: "Password is invalid",
           message: `Password for ${username} is not valid!`,
         });
       }
 
-      res.status(200).json({ message: "User successfully verified" });
-    } catch (error) {}
+      if (!process.env.JWT_SECRET) {
+        res.status(500).json({
+          message: "JWT_SECRET is not defined in the .env file",
+        });
+      }
+      const token = jwt.sign(
+        {
+          email: existingUser.email,
+          username: existingUser.username,
+          id: existingUser._id.toString(),
+        },
+        process.env.JWT_SECRET,
+        {
+          algorithm: "RS512",
+        }
+      );
+
+      res.status(200).json({
+        message: "User successfully verified",
+        data: {
+          email: existingUser.email,
+          username: existingUser.username,
+          token: token,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ message: "Database connection error", error: error.message });
+    }
   } else {
     res.status(400).json({
       message: "Please send a POST request with Username, Email, Password",

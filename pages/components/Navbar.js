@@ -6,7 +6,7 @@ function Navbar(){
 <div className="flex items-center">
     <h1 className="text-xl text-white font-bold pl-2">Store</h1>
 </div>
-<div>
+<div className="flex gap-[10px]">
     <Dropdown/>
 </div>
         </div>
