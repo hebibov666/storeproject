@@ -14,11 +14,11 @@ import { DBUrl } from "@/lib/db";
 import { UserModel } from "@/lib/models/user";
 import mongoose from "mongoose";
 import * as bcrypt from "bcrypt";
+import { v2 } from "cloudinary";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const { password, email, username } = req.body;
-
+    const { password, email, username, file } = req.body;
     if (
       password === "" ||
       email === "" ||
@@ -30,6 +30,26 @@ export default async function handler(req, res) {
       return res
         .status(406)
         .json({ error: "Invalid Data", message: "Data is not valid" });
+    }
+
+    let url;
+
+    if (file) {
+      await v2.uploader
+        .upload(file, {
+          resource_type: "image",
+          folder: "store",
+        })
+        .then((data) => {
+          url = data.url;
+        })
+        .catch((error) => {
+          return res.status(500).json({
+            error: "There was an error in uploading the image",
+            message:
+              "Internal server error, while uploading image. Please try again",
+          });
+        });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -59,7 +79,15 @@ export default async function handler(req, res) {
       const hash = await bcrypt.hash(password, passwordSalt);
 
       // Create a new user instance
-      const newUser = new UserModel({ username, email, password: hash });
+
+      const newUser = new UserModel({
+        username,
+        email,
+        password: hash,
+        image: url
+          ? url
+          : "https://res.cloudinary.com/dlnk5nlea/image/upload/v1706539882/y1no7nwjaqdo6oi2vdxe.jpg",
+      });
       await newUser.save();
 
       res.status(200).json({ message: "User successfully created" });
