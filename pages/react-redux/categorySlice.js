@@ -5,25 +5,15 @@ const categorySlice = createSlice({
   name: 'counter',
   initialState: {
     value: 0,
-    category:[
-        {
-            title:"Discounted Products"
-          },
-          {
-            title:"For men"
-          },
-          {
-            title:"For women"
-          },
-          {
-            title:"Electronics"
-          },
-    ]
+    user:null
   },
   reducers: {
-   
+   setUserData:(state,action)=>{
+state.user=action.payload
+console.log(action)
+   }
   },
 });
 
-export const { increment, decrement } = categorySlice.actions;
+export const { setUserData } = categorySlice.actions;
 export default categorySlice.reducer;

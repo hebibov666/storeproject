@@ -7,7 +7,6 @@
     if the password is wrong it returns a 401 unauthorized error
     all the errors are returned with error name and message;
 
-    Todo: Check the hash password of the user!
 */
 
 import { DBUrl } from "@/lib/db";
@@ -58,11 +57,14 @@ export default async function handler(req, res) {
           message: "JWT_SECRET is not defined in the .env file",
         });
       }
+
+      const expirationTime = Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60;
+
       const token = jwt.sign(
         {
-          email: existingUser.email,
           username: existingUser.username,
           id: existingUser._id.toString(),
+          exp: expirationTime,
         },
         process.env.JWT_SECRET,
         {
@@ -75,6 +77,7 @@ export default async function handler(req, res) {
         data: {
           email: existingUser.email,
           username: existingUser.username,
+          image:existingUser.image,
           token: token,
         },
       });

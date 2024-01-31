@@ -1,4 +1,4 @@
-import { storetypes } from "@/lib/constants/storetypes";
+import { storetypes } from "@/lib/constants/categoryVariables";
 import { Formik, useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "Yup"
