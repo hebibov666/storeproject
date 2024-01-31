@@ -75,6 +75,7 @@ export default async function handler(req, res) {
         data: {
           email: existingUser.email,
           username: existingUser.username,
+          image:existingUser.image,
           token: token,
         },
       });

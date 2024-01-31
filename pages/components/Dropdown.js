@@ -3,7 +3,11 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
+import PersonIcon from '@mui/icons-material/Person';
+import { useSelector } from 'react-redux';
+import { logindropdown } from '@/lib/constants/categoryVariables';
 function Dropdown(){
+  const user=useSelector(state=>state.category.user)
     const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -20,9 +24,9 @@ function Dropdown(){
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
-          className='dropdown text-black bg-white hover:text-black font-bold'
+          className="dropdown"
         >
-          Account
+     <PersonIcon fontSize='large'/>
         </Button>
         <Menu
           id="demo-positioned-menu"
@@ -42,9 +46,6 @@ function Dropdown(){
           <MenuItem onClick={handleClose}>Login</MenuItem>
         <Link href="/userlogin/signup">
         <MenuItem onClick={handleClose}>Register</MenuItem>
-        </Link>
-        <Link href="/storepages/createstore">
-        <MenuItem onClick={handleClose}>Create store</MenuItem>
         </Link>
         </Menu>
       </div>
