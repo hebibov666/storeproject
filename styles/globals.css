@@ -68,8 +68,26 @@ background: white;
 }
 .dropdown{
   background: white !important;
+  height: 35px !important;
+  border-radius: 5px !important;
+  padding: 3px !important;
+  display: flex !important;
+  align-items: center !important;
+  color: black !important;
+  justify-content: center !important;
+  font-size: 16px !important;
+}
+.login-dropwdown{
+  background: none !important;
 }
 .MuiPopover-root .MuiMenu-root .MuiModal-root{
   width: 100% !important;
   overflow: hidden !important;
+}
+.create{
+  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  font-weight: 500;
+}
+.noscroll::-webkit-scrollbar{
+  opacity: 0;
 }
