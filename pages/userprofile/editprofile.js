@@ -25,9 +25,6 @@ function EditProfile(){
             headers: {
                 jwttoken:jwtToken,
             },
-            body:{
-              newData
-            }
           });
           if (!response.status === 200) {
             console.log("error");
