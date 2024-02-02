@@ -2,8 +2,17 @@ import { useEffect,useState } from "react"
 import UserMenu from "./UserMenu";
 import { useSelector } from "react-redux";
 import SettingsIcon from '@mui/icons-material/Settings';
+import { useDispatch } from "react-redux";
+import { setUserData } from "../react-redux/categorySlice";
 function Profile({showProfile}){
   const user=useSelector(state=>state.category.user)
+  const dispatch=useDispatch()
+  useEffect(()=>{
+    if (typeof window !== 'undefined') {
+     const user=JSON.parse(localStorage.getItem("user"))
+     dispatch(setUserData(user))
+    }
+  },[dispatch])
 const [settings,setSettings]=useState(false)
     return(
 <div className={`w-[350px]  max-[571px]:w-full h-full  overflow-hidden flex flex-col gap-[15px] bg-white`}>

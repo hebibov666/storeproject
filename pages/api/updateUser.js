@@ -159,7 +159,7 @@ export default async function handler(req, res) {
         data: {
           newToken: cookieValue,
           data: {
-            name: updatedData.name,
+            name: updatedData.username,
             email: updatedData.email,
             image: updatedData.image,
           },

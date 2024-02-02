@@ -6,9 +6,11 @@ import Cookies from "js-cookie";
 import Image from "next/image";
 import axios from "axios";
 import { resizeImage } from "@/lib/utils";
+import Alert from "../components/alertcomponents/SuccessAlert";
 
 function EditProfile() {
   const user = useSelector((state) => state.category.user);
+  const [update,setUpdate]=useState(false)
   const [image, setImage] = useState("/nouser.jpg");
   const initialValues = {
     username: "",
@@ -30,12 +32,23 @@ function EditProfile() {
       console.log(jwtToken);
       const response = await axios.post("/api/updateUser", {
         newData: JSON.stringify(payload),
-      });
+      },
+      );
       console.log(response);
-      if (!response.status === 200) {
-        console.log("error");
+      if (response.status === 200) {
+        const newJwtToken = response.data.data.newToken;
+  
+        // Cookie'yi güncelleyin
+        document.cookie = "jwtToken=" + newJwtToken + "; expires=Thu, 01 Jan 2026 00:00:00 UTC; path=/";
+        const userData={
+          username:response.data.data.data.name,
+         email:response.data.data.data.email,
+        image:response.data.data.data.image,
+        }
+      localStorage.setItem("user", JSON.stringify(userData));
+      } else {
+        console.log("Error updating user information");
       }
-      // API'den gelen JWT token'ını alın
     } catch (error) {
       console.log(error);
     }
@@ -69,8 +82,8 @@ function EditProfile() {
         <div className="bg-white border-2 border-[#E2E2E2]  h-[50px] flex pl-4 items-center  max-[571px]:h-[40px]">
           <h1 className="text-black font-bold text-xl">Edit Profile</h1>
         </div>
-        <div className="flex justify-center  border-2 border-[#E2E2E2] pb-[50px]">
-          <form
+        <div className="flex relative justify-center  border-2 border-[#E2E2E2] pb-[50px]">
+         <form
             onSubmit={formik.handleSubmit}
             className="flex flex-col w-[80%] gap-[20px] pt-[50px]"
           >
