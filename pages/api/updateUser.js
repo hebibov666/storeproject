@@ -1,12 +1,12 @@
 /* 
   //* Info:  
     This API endpoint accepts POST requests to update user data.
-    data=> payload = {
+    JSON stringified data
       newData: {
         username: value,
         email: value,
       }
-    }
+    
     It verifies the JWT token to authenticate the user.
     If the token is valid, it updates the user data, if provided.
     If the user data is updated successfully, it returns a 200 status code with a success message.
@@ -37,6 +37,7 @@ export default async function handler(req, res) {
     }
 
     try {
+      console.log(newData);
       const trimmedData = newData.trim();
       var parsedData = JSON.parse(trimmedData);
     } catch (error) {
@@ -45,7 +46,6 @@ export default async function handler(req, res) {
         .json({ message: "Error Parsing newData; please send a Valid JSON" });
     }
 
-    // console.log(parsedData);
     try {
       // Verify the JWT token
       const decoded = jwt.verify(jwtToken, secret);
@@ -77,25 +77,23 @@ export default async function handler(req, res) {
       const allowedFields = ["username", "email", "image"];
 
       // Filter newData to include only allowed fields and remove empty string values
-      const sanitizedData = Object.keys(parsedData.newData)
-        .filter(
-          (key) => allowedFields.includes(key) && parsedData.newData[key] !== ""
-        )
+      const sanitizedData = Object.keys(parsedData)
+        .filter((key) => allowedFields.includes(key) && parsedData[key] !== "")
         .reduce((obj, key) => {
-          obj[key] = parsedData.newData[key]; // Assign the value of the key from newData to the corresponding key in obj
+          obj[key] = parsedData[key]; // Assign the value of the key from newData to the corresponding key in obj
           return obj; // Return the accumulated object
         }, {});
 
       // Is email valid??
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(sanitizedData.email)) {
-        return res
-          .status(406)
-          .json({ error: "Invalid email", message: "Email is not valid" });
-      }
-
-      // Check for uniqueness of email
       if (sanitizedData.email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(sanitizedData.email)) {
+          return res
+            .status(406)
+            .json({ error: "Invalid email", message: "Email is not valid" });
+        }
+
+        // Check for uniqueness of email
         const existingEmail = await UserModel.findOne({
           email: sanitizedData.email,
           _id: { $ne: existingUser._id }, // Exclude current user
