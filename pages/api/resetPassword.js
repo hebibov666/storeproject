@@ -18,7 +18,7 @@ const expirationTime = Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60; // jwt
 export default async function handler(req, res) {
   if (req.method === "POST") {
     // Handle POST requests
-    const jwtToken = req.headers.jwttoken;
+    const jwtToken = req.cookies.jwtToken;
     const { oldPassword, newPassword } = req.body;
 
     if (!jwtToken) {
