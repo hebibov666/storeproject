@@ -17,6 +17,7 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { DBUrl } from "@/lib/db";
 import { UserModel } from "@/lib/models/user";
+import { v2 } from "cloudinary";
 
 const secret = process.env.JWT_SECRET;
 const expirationTime = Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60; // jwt expire time
@@ -85,6 +86,14 @@ export default async function handler(req, res) {
           return obj; // Return the accumulated object
         }, {});
 
+      // Is email valid??
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(sanitizedData.email)) {
+        return res
+          .status(406)
+          .json({ error: "Invalid email", message: "Email is not valid" });
+      }
+
       // Check for uniqueness of email
       if (sanitizedData.email) {
         const existingEmail = await UserModel.findOne({
@@ -109,6 +118,24 @@ export default async function handler(req, res) {
             .status(400)
             .json({ message: "Username already exists in the system" });
         }
+      }
+
+      if (sanitizedData.image) {
+        await v2.uploader
+          .upload(sanitizedData.image, {
+            resource_type: "image",
+            folder: "store",
+          })
+          .then((data) => {
+            sanitizedData.image = data.url;
+          })
+          .catch((error) => {
+            return res.status(500).json({
+              error: "There was an error in uploading the image",
+              message:
+                "Internal server error, while uploading image. Please try again",
+            });
+          });
       }
 
       const updatedData = await UserModel.findByIdAndUpdate(
