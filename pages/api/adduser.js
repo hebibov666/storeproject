@@ -86,7 +86,7 @@ export default async function handler(req, res) {
         password: hash,
         image: url
           ? url
-          : "https://res.cloudinary.com/dlnk5nlea/image/upload/v1706539882/y1no7nwjaqdo6oi2vdxe.jpg",
+          : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFu5JqaQu89nlv5jGi1Wdszge-RvwLQ6o65eMoUtC0N1UixSfe7OeHd550i1-9ctOxQvo&usqp=CAU",
       });
       await newUser.save();
 

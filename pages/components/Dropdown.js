@@ -43,7 +43,9 @@ function Dropdown(){
             horizontal: 'left',
           }}
         >
-          <MenuItem onClick={handleClose}>Login</MenuItem>
+        <Link href="/userlogin/signin">
+        <MenuItem onClick={handleClose}>Login</MenuItem>
+        </Link>
         <Link href="/userlogin/signup">
         <MenuItem onClick={handleClose}>Register</MenuItem>
         </Link>

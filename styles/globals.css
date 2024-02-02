@@ -89,5 +89,5 @@ background: white;
   font-weight: 500;
 }
 .noscroll::-webkit-scrollbar{
-  opacity: 0;
+  display: none;
 }

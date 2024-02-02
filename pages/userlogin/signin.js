@@ -28,7 +28,12 @@ function Signin() {
         "jwtToken=" +
         jwtToken +
         "; expires=Thu, 01 Jan 2026 00:00:00 UTC; path=/";
-      localStorage.setItem("user", JSON.stringify(response.data.data.username));
+        const userData={
+          username:response.data.data.username,
+         email:response.data.data.email,
+        image:response.data.data.image,
+        }
+      localStorage.setItem("user", JSON.stringify(userData));
       router.push("/userprofile/profile");
     } catch (error) {
       console.log(error);

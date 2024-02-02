@@ -7,12 +7,13 @@ import { useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import { resizeImage } from "@/lib/utils";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 function Signup() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [image, setImage] = useState("/nouser.jpg");
-
+const router=useRouter()
   const initialValues = {
     username: "",
     email: "",
@@ -33,7 +34,7 @@ function Signup() {
       if (!response.status === 200) {
         console.log("Xeta");
       }
-      console.log(response);
+    router.push("/")
     } catch (error) {
       console.log(error);
       setError(error.response.data.message);
