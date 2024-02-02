@@ -1,6 +1,12 @@
 /* 
   //* Info:  
     This API endpoint accepts POST requests to update user data.
+    data=> payload = {
+      newData: {
+        username: value,
+        email: value,
+      }
+    }
     It verifies the JWT token to authenticate the user.
     If the token is valid, it updates the user data, if provided.
     If the user data is updated successfully, it returns a 200 status code with a success message.
@@ -18,7 +24,8 @@ const expirationTime = Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60; // jwt
 export default async function handler(req, res) {
   if (req.method === "POST") {
     // Handle POST requests
-    const jwtToken = req.headers.jwttoken;
+    const jwtToken = req.cookies.jwtToken;
+    // console.log(jwtToken);
     const { newData } = req.body;
 
     if (!jwtToken) {
@@ -36,6 +43,8 @@ export default async function handler(req, res) {
         .status(500)
         .json({ message: "Error Parsing newData; please send a Valid JSON" });
     }
+
+    // console.log(parsedData);
     try {
       // Verify the JWT token
       const decoded = jwt.verify(jwtToken, secret);
@@ -66,12 +75,13 @@ export default async function handler(req, res) {
       // Define allowed fields for updating user data
       const allowedFields = ["username", "email", "image"];
 
-      // Filter newData to include only allowed fields
-
-      const sanitizedData = Object.keys(parsedData)
-        .filter((key) => allowedFields.includes(key))
+      // Filter newData to include only allowed fields and remove empty string values
+      const sanitizedData = Object.keys(parsedData.newData)
+        .filter(
+          (key) => allowedFields.includes(key) && parsedData.newData[key] !== ""
+        )
         .reduce((obj, key) => {
-          obj[key] = parsedData[key]; // Assign the value of the key from newData to the corresponding key in obj
+          obj[key] = parsedData.newData[key]; // Assign the value of the key from newData to the corresponding key in obj
           return obj; // Return the accumulated object
         }, {});
 
@@ -103,7 +113,7 @@ export default async function handler(req, res) {
 
       const updatedData = await UserModel.findByIdAndUpdate(
         existingUser._id,
-        sanitizedData,
+        { ...sanitizedData },
         { new: true }
       );
 
@@ -121,7 +131,14 @@ export default async function handler(req, res) {
 
       return res.status(200).json({
         message: "User data updated successfully",
-        data: { newToken: cookieValue },
+        data: {
+          newToken: cookieValue,
+          data: {
+            name: updatedData.name,
+            email: updatedData.email,
+            image: updatedData.image,
+          },
+        },
       });
     } catch (error) {
       // If verification fails, an error is thrown

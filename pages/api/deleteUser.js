@@ -19,7 +19,7 @@ const secret = process.env.JWT_SECRET;
 export default async function handler(req, res) {
   if (req.method === "POST") {
     // Handle POST requests
-    const jwtToken = req.headers.jwttoken;
+    const jwtToken = req.cookies.jwtToken;
     const { password } = req.body;
     // console.log(password);
 
