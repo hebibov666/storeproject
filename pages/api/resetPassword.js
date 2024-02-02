@@ -1,8 +1,8 @@
 /* 
   //* Info:  
-    This API endpoint accepts POST requests to update user data.
+    This API endpoint accepts POST requests to update password (oldPassword, newPassword).
     It verifies the JWT token to authenticate the user.
-    If the token is valid, it updates the user data, if provided.
+    If the token and password is valid, it updates the user password.
     If the user data is updated successfully, it returns a 200 status code with a success message.
     If the token, or user is not valid, it returns a 401 unauthorized error or a 400 bad request error with a message.
 */
@@ -19,23 +19,17 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     // Handle POST requests
     const jwtToken = req.headers.jwttoken;
-    const { newData } = req.body;
+    const { oldPassword, newPassword } = req.body;
 
     if (!jwtToken) {
       return res.status(400).json({ message: "JWT token missing" });
     }
-    if (!newData) {
-      return res.status(400).json({ message: "newData missing" });
+    if (!oldPassword || !newPassword) {
+      return res
+        .status(400)
+        .json({ message: "Old password or new password is missing" });
     }
 
-    try {
-      const trimmedData = newData.trim();
-      var parsedData = JSON.parse(trimmedData);
-    } catch (error) {
-      return res
-        .status(500)
-        .json({ message: "Error Parsing newData; please send a Valid JSON" });
-    }
     try {
       // Verify the JWT token
       const decoded = jwt.verify(jwtToken, secret);
@@ -63,65 +57,27 @@ export default async function handler(req, res) {
         return res.status(401).json({ message: "Invalid JWT token" });
       }
 
-      // Define allowed fields for updating user data
-      const allowedFields = ["username", "email", "image"];
+      const isPasswordCorrect = await bcrypt.compare(
+        oldPassword,
+        existingUser.password
+      );
 
-      // Filter newData to include only allowed fields
-
-      const sanitizedData = Object.keys(parsedData)
-        .filter((key) => allowedFields.includes(key))
-        .reduce((obj, key) => {
-          obj[key] = parsedData[key]; // Assign the value of the key from newData to the corresponding key in obj
-          return obj; // Return the accumulated object
-        }, {});
-
-      // Check for uniqueness of email
-      if (sanitizedData.email) {
-        const existingEmail = await UserModel.findOne({
-          email: sanitizedData.email,
-          _id: { $ne: existingUser._id }, // Exclude current user
-        });
-        if (existingEmail) {
-          return res
-            .status(400)
-            .json({ message: "Email already exists in the system" });
-        }
+      if (!isPasswordCorrect) {
+        return res.status(401).json({ message: "Password is not correct" });
       }
 
-      // Check for uniqueness of username
-      if (sanitizedData.username) {
-        const existingUsername = await UserModel.findOne({
-          username: sanitizedData.username,
-          _id: { $ne: existingUser._id }, // Exclude current user
-        });
-        if (existingUsername) {
-          return res
-            .status(400)
-            .json({ message: "Username already exists in the system" });
-        }
-      }
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
 
       const updatedData = await UserModel.findByIdAndUpdate(
         existingUser._id,
-        sanitizedData,
+        {
+          password: hashedPassword,
+        },
         { new: true }
       );
 
-      const cookieValue = jwt.sign(
-        {
-          username: updatedData.username,
-          id: updatedData._id.toString(),
-          exp: expirationTime,
-        },
-        process.env.JWT_SECRET,
-        {
-          algorithm: "RS512",
-        }
-      );
-
       return res.status(200).json({
-        message: "User data updated successfully",
-        data: { newToken: cookieValue },
+        message: "Password updated successfully",
       });
     } catch (error) {
       // If verification fails, an error is thrown
