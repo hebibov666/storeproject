@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import Dropdown from "./Dropdown"
+import { signIn,signOut,useSession } from "next-auth/react";
 import Link from "next/link";
-import { useSelector } from "react-redux";
 function Navbar(){
-  const user=useSelector(state=>state.category.user)
+const {data:session}=useSession()
   
     return(
         <div className="w-full h-[70px] bg-blue-600 flex items-center justify-between pr-2">
@@ -12,9 +12,11 @@ function Navbar(){
 </div>
 <div className="flex gap-[10px] items-center">
     <button className="create bg-white text-black rounded-[5px] h-[30px] p-[5px] flex items-center justify-center">Create store</button>
-    {user!=null ? <Link href="/userprofile/layout">
-    <img className="w-[40px] h-[40px] rounded-full object-cover" src={user?.image}></img>
-    </Link>: <Dropdown/>}
+    {session?.user ? (
+     <Link href="/userprofile/layout">
+            <img className="w-[40px] h-[40px] rounded-full object-cover" src={session?.user.image}></img>
+     </Link>
+    ) : (<Dropdown/>)}
 </div>
         </div>
     )

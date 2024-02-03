@@ -1,6 +1,7 @@
 import Link from "next/link";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import { Formik, useFormik } from "formik";
+import { signIn } from "next-auth/react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import * as Yup from "Yup";
@@ -15,29 +16,13 @@ function Signin() {
       username: values.username,
       password: values.password,
     };
-    try {
-      const response = await axios.post("/api/userSignIn", payload);
-      if (!response.status === 200) {
-        console.log("error");
-      }
-      // API'den gelen JWT token'ını alın
-      var jwtToken = response.data.data.token;
-
-      // Cookie'yi oluşturun
-      document.cookie =
-        "jwtToken=" +
-        jwtToken +
-        "; expires=Thu, 01 Jan 2026 00:00:00 UTC; path=/";
-        const userData={
-          username:response.data.data.username,
-         email:response.data.data.email,
-        image:response.data.data.image,
-        }
-      localStorage.setItem("user", JSON.stringify(userData));
-      router.push("/userprofile/profile");
-    } catch (error) {
-      console.log(error);
-    }
+    const result =await signIn("credentials",{
+      username:payload.username,
+      password:payload.password,
+      redirect:true,
+      callbackUrl:"/"
+    })
+  
   };
 
   const validationSchema = Yup.object({
