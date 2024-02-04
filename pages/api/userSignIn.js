@@ -71,8 +71,8 @@ export default async function handler(req, res) {
           algorithm: "RS512",
         }
       );
-
-      res.status(200).json({
+      res.setHeader('Set-Cookie', `jwtToken=${token}; HttpOnly; Max-Age=${expirationTime}; Path=/`);
+     res.status(200).json({
         message: "User successfully verified",
         data: {
           email: existingUser.email,

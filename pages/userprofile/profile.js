@@ -6,12 +6,13 @@ import { useDispatch } from "react-redux";
 import { setUserData } from "../react-redux/categorySlice";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
+import axios from "axios";
 function Profile(){
   const dispatch=useDispatch()
   const router=useRouter()
  const {data:session}=useSession()
 const [settings,setSettings]=useState(false)
-console.log(session)
     return(
 <div className={`w-[350px]  max-[571px]:w-full h-full  overflow-hidden flex flex-col gap-[15px] bg-white`}>
 <div className="bg-[#8A2BE2] relative pb-[10px] flex flex-col items-center w-full max-[480px]:pb-[15px]">

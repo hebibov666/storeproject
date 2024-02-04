@@ -14,7 +14,7 @@ password:{label:"password",type:"password"}
 
             async authorize(credentials,req){
                 const response=await axios.post("http://localhost:3000/api/userSignIn",credentials)
-                const user=await response.data.data.token
+                const user=await response.data.data
                 if(user){
                     return user
                 }else{
@@ -24,9 +24,6 @@ password:{label:"password",type:"password"}
         
         })
     ],
-    session:{
-        jwt:true
-    },
     pages:{
        signIn:'/userlogin/signin'
     },
