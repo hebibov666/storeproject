@@ -1,4 +1,3 @@
-import Layout from "./layout";
 import { useState } from "react";
 import { Formik, useFormik } from "formik";
 import { useSelector } from "react-redux";
@@ -7,6 +6,7 @@ import Image from "next/image";
 import axios from "axios";
 import { resizeImage } from "@/lib/utils";
 import Alert from "../components/alertcomponents/SuccessAlert";
+import UserLayout from "../layouts/userLayout";
 
 function EditProfile() {
   const user = useSelector((state) => state.category.user);
@@ -77,12 +77,11 @@ function EditProfile() {
     onSubmit,
   });
   return (
-    <Layout>
       <div className="flex flex-col w-[80%] max-[571px]:w-full gap-[10px]">
-        <div className="bg-white border-2 border-[#E2E2E2]  h-[50px] flex pl-4 items-center  max-[571px]:h-[40px]">
-          <h1 className="text-black font-bold text-xl">Edit Profile</h1>
+        <div className="bg-[#242B58]   h-[50px] flex pl-4 items-center  max-[571px]:h-[40px]">
+          <h1 className="text-white font-bold text-xl">Edit Profile</h1>
         </div>
-        <div className="flex relative justify-center  border-2 border-[#E2E2E2] pb-[50px]">
+        <div className="flex relative justify-center   pb-[50px]">
          <form
             onSubmit={formik.handleSubmit}
             className="flex flex-col w-[80%] gap-[20px] pt-[50px]"
@@ -134,7 +133,7 @@ function EditProfile() {
           </form>
         </div>
       </div>
-    </Layout>
+  
   );
 }
 export default EditProfile;

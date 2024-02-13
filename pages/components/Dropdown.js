@@ -17,16 +17,16 @@ function Dropdown(){
     setAnchorEl(null);
   };
     return(
-        <div>
+        <div className='w-[45px] flex justify-center rounded-[5px] overflow-hidden box-border'>
         <Button
           id="demo-positioned-button"
           aria-controls={open ? 'demo-positioned-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
-          className="dropdown"
+          className="dropdown w-auto bg-white max-[500px]:bg-transparent"
         >
-     <PersonIcon fontSize='large'/>
+     <PersonIcon fontSize='large' className='max-[500px]:text-white hover:text-white'/>
         </Button>
         <Menu
           id="demo-positioned-menu"

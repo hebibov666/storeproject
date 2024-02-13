@@ -1,14 +1,18 @@
-import Layout from "./layout"
+import UserLayout from "../layouts/userLayout"
+import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 
 function Favorites(){
     return(
-       <Layout>
-          <div className="flex pt-[10px] flex-col w-[80%] max-[571px]:w-full">
-          <div className="bg-[#8A2BE2]  h-[50px] flex pl-4 items-center max-[571px]:h-[40px]">
+          <div className="flex  flex-col w-[80%] max-[571px]:w-full">
+          <div className="bg-[#242B58]   h-[50px] flex pl-4 items-center max-[571px]:h-[40px]">
                     <h1 className="text-white font-bold text-xl">Favorites</h1>
                 </div>
+                <div className="flex h-full flex-col justify-center items-center max-[571px]:pt-[100px]">
+                    <BookmarkBorderOutlinedIcon className="text-[100px] max-[450px]:text-[70px] text-[#C8C8C8]"/>
+                    <p className="text-[20px] text-[#909090]">No favorites yet!</p>
+                </div>
           </div>
-       </Layout>
+      
     )
 }
 export default Favorites

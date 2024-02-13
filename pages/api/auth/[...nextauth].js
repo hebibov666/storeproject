@@ -24,7 +24,4 @@ password:{label:"password",type:"password"}
         
         })
     ],
-    pages:{
-       signIn:'/userlogin/signin'
-    },
 })

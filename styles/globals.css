@@ -67,10 +67,9 @@ background: white;
   height: 40px !important;
 }
 .dropdown{
-  background: white !important;
+ 
   height: 35px !important;
   border-radius: 5px !important;
-  padding: 3px !important;
   display: flex !important;
   align-items: center !important;
   color: black !important;
