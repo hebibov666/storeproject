@@ -15,22 +15,6 @@ export default NextAuth({
         },
         password: { label: "password", type: "password" },
       },
-
-<<<<<<< HEAD
-            async authorize(credentials,req){
-                const response=await axios.post("http://localhost:3000/api/userSignIn",credentials)
-                const user=await response.data.data
-                if(user){
-                    return user
-                }else{
-                    return null
-                }
-            }
-        
-        })
-    ],
-})
-=======
       async authorize(credentials, req) {
         const response = await axios.post(
           "http://localhost:3000/api/userSignIn",
@@ -53,4 +37,4 @@ export default NextAuth({
     signIn: "/userlogin/signin",
   },
 });
->>>>>>> f4d5cd920393c725f9497f11482e8d52dd74c1b0
+

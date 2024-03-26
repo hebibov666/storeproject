@@ -90,3 +90,6 @@ background: white;
 .noscroll::-webkit-scrollbar{
   display: none;
 }
+.user{
+  background: #885DF1;
+}
