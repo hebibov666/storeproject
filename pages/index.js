@@ -1,10 +1,11 @@
 import { useEffect,useState } from "react";
 import Navbar from "./components/Navbar";
-import Categories from "./components/Categories";
+import MainSection from "./components/MainSection";
 export default function Home() {
   return (
     <main>
-    
+    <Navbar/>
+    <MainSection/>
     </main>
   );
 }
