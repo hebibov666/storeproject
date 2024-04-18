@@ -13,10 +13,10 @@ const router=useRouter()
         image:null,
     }
     const validationSchema=new Yup.object({
-        username:Yup.string().required("Please eter username"),
-        email:Yup.string().email().required("Please enter email"),
-        number:Yup.string().required("Please enter phone number"),
-        password:Yup.mixed().required("Please enter password")
+        username:Yup.string().required("Enter username"),
+        email:Yup.string().email().required("Enter email"),
+        number:Yup.string().required("Enter phone number"),
+        password:Yup.mixed().required("Enter password")
     })
     const formik=useFormik({
         initialValues,

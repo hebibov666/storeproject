@@ -1,11 +1,11 @@
 import { useEffect,useState } from "react";
 import Navbar from "./components/Navbar";
-import MainSection from "./components/MainSection";
+import SearchFilter from "./components/SearchFilter";
 export default function Home() {
   return (
     <main>
     <Navbar/>
-    <MainSection/>
+    <SearchFilter/>
     </main>
   );
 }
