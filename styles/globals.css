@@ -49,3 +49,16 @@ background: #000000;
  height:auto !important;
  overflow: visible;
 }
+@media screen and (max-width:552px){
+  .active-select{
+    position: fixed;
+    z-index: 1;
+  top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh !important;
+  }
+  .active-select ul{
+    height: 100%;
+  }
+}
