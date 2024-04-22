@@ -22,17 +22,15 @@ function NewPost({ cars }) {
     });
 
      {/*Custom select elementlərin açılıb bağlanması üçün funksiya, .red  klassı global.css faylında yaradılıb. Elementə klik etdikdə ona red klassı əlavə olunur və select box açılır  */}
-    const toggleClass = (e) => {
-        e.currentTarget.classList.toggle("active-select");
-    };
+    
 
  {/*Buradakı funksiyalar müvafiq olaraq formik-de teyin edilmiş fieldlərin dəyərini dəyişir.Hərbir funksiya  */}
-   const selectOption=(field,value,index)=>{
+   const selectOption=(field,option,index)=>{
     if(field==="make.name"){
-        formik.setFieldValue(field,value)
+        formik.setFieldValue(field,option)
         formik.setFieldValue("make.id",index)
     }else{
-        formik.setFieldValue(field,value)
+        formik.setFieldValue(field,option)
     }
    }
  
@@ -47,46 +45,46 @@ const models=cars[formik.values.make.id]?.models.map(model=>model)
                   <CustomSelect
 title={formik.values.make.name || "Marka secin"}
 options={make}
-onClick={toggleClass}
 selectOption={selectOption}
 field="make.name"
 element="input"
+header="Marka"
                   />
                      {/*Avtomobil modelinin secilməsi üçün select box */}
                 <CustomSelect
                 title={formik.values.model || "Model secin"}
 options={models}
-onClick={toggleClass}
 selectOption={selectOption}
 field="model"
 element="input"
+header="Model"
                 />
                      {/*Ban növünün secilməsi üçün select box */}
                   <CustomSelect
-title={formik.values.bodyType || "Ban novu"}
-onClick={toggleClass}
+title={formik.values.bodyType || "Ban növü"}
 selectOption={selectOption}
 options={options.body_type}
 field="bodyType"
 element="h1"
+header="Ban növü"
                   />
                      {/*Yanacaq növünün secilməsi üçün select box */}
                   <CustomSelect
-title={formik.values.fuelType || "Yanacaq novu"}
-onClick={toggleClass}
+title={formik.values.fuelType || "Yanacaq növü"}
 selectOption={selectOption}
 options={options.fuel_type}
 field="fuelType"
 element="h1"
+header="Yanacaq növü"
                   />
                      {/*Sürətlər qutusunun secilməsi üçün select box */}
         <CustomSelect
-title={formik.values.gearBox || "Suretler qutusu"}
-onClick={toggleClass}
+title={formik.values.gearBox || "Sürətlər qutusu"}
 options={options.transmission}
 selectOption={selectOption}
 field="gearBox"
 element="h1"
+header="Sürətlər qutusu"
         />
              </Form>
            

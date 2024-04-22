@@ -1,6 +1,6 @@
 function Container({children}){
     return(
-        <div className="w-full h-auto min-h-[100vh] flex flex-col items-center justify-start gap-[70px] ">
+        <div className="w-full h-full flex flex-col items-center justify-center gap-[70px] ">
 {children}
             </div>
     )
