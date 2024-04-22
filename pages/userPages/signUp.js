@@ -1,86 +1,83 @@
 import Link from "next/link"
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useRouter } from "next/router";
-import { Formik, useFormik } from "formik"
+import {useFormik } from "formik"
 import * as Yup from "yup"
-function SignUp(){
-const router=useRouter()
-    const initialValues={
-        username:"",
-        email:"",
-        password:"",
-        number:"",
-        image:null,
+import Input from "../components/InputComponent";
+import Container from "../components/Container";
+import Button from "../components/ButtonComponent";
+import Form from "../components/FormComponent";
+import ImageSelect from "../components/ImageSelect";
+import Header from "../components/PageHeader";
+function SignUp() {
+    const initialValues = {
+        username: "",
+        email: "",
+        password: "",
+        number: "",
+        image: null,
     }
-    const validationSchema=new Yup.object({
-        username:Yup.string().required("Enter username"),
-        email:Yup.string().email().required("Enter email"),
-        number:Yup.string().required("Enter phone number"),
-        password:Yup.mixed().required("Enter password")
+    const onSubmit = (values) => {
+        console.log(values)
+    }
+    const validationSchema = new Yup.object({
+        username: Yup.string().required("İstifadəçi adını daxil edin"),
+        email: Yup.string().email("Düzgün email ünvanı daxil edin").required("Email ünvanı daxil edin"),
+        number: Yup.string().required("Telefon nömrəsi daxil edin"),
+        password: Yup.mixed().required("Şifrə daxil edin")
     })
-    const formik=useFormik({
+    const formik = useFormik({
         initialValues,
-        validationSchema
+        validationSchema,
+        onSubmit,
+
     })
-    return(
-        <div className="w-full h-auto min-h-[100vh] flex items-center justify-center max-[552px]:items-start">
-<div className="flex border-[2px] border-[#F5F5F5] pb-[50px] shadow-md shadow-[#F5F5F5]  flex-col gap-[20px] items-center w-[50%] max-[552px]:w-full max-[552px]:h-full">
-    <div className="relative bg-[#F5F5F5] w-full flex justify-center items-center h-[50px]">
-        <ArrowBackIcon onClick={()=>{router.push("/")}} className="absolute left-4 cursor-pointer"/>
-<h1 className="font-bold">Sign Up</h1>
-    </div>
-<form onSubmit={formik.handleSubmit} className="w-full flex flex-col gap-[15px] items-center">
-<label 
-for="fileInput"  
-className="w-[100px] h-[100px] rounded-full border-[1px] border-[#E8E8E8] overflow-hidden">
-    <img src="../nouser.jpg" className="w-full h-full object-cover"></img>
-</label>
-        <input type="file" id="fileInput" className="hidden"></input>
-<input 
-type="text" 
-placeholder="Username" 
-name="username"
-onChange={formik.handleChange}
-value={formik.values.username}
-className="w-[90%] outline-none p-[3px] h-[40px] border-[2px] border-[#E8E8E8] pl-2 rounded-[5px]">
-</input>
-{formik.errors.username ? <p className="text-start text-red-400 w-[90%] mt-[-10px] pl-[2px]">{formik.errors.username}</p> : null}
-<input 
-type="text" 
-placeholder="Email" 
-name="email"
-onChange={formik.handleChange}
-value={formik.values.email}
-className="w-[90%] outline-none p-[3px] h-[40px]  border-[2px] border-[#E8E8E8] pl-2 rounded-[5px]">
-</input>
-{formik.errors.email ? <p className="text-start text-red-400 w-[90%] mt-[-10px] pl-[2px]">{formik.errors.email}</p> : null}
-<input 
-type="text" 
-placeholder="Phone number" 
-name="number"
-onChange={formik.handleChange}
-value={formik.values.number}
-className="w-[90%] outline-none p-[3px] h-[40px]  border-[2px] border-[#E8E8E8] pl-2 rounded-[5px]">
-</input>
-{formik.errors.number ? <p className="text-start text-red-400 w-[90%] mt-[-10px] pl-[2px]">{formik.errors.number}</p> : null}
-<input 
-type="password" 
-placeholder="Password" 
-name="password"
-onChange={formik.handleChange}
-value={formik.values.password}
-className="w-[90%] outline-none p-[3px] h-[40px]  border-[2px] border-[#E8E8E8] pl-2 rounded-[5px]">
-</input>
-{formik.errors.password ? <p className="text-start text-red-400 w-[90%] mt-[-10px] pl-[2px]">{formik.errors.password}</p> : null}
-<button
-className="bg-blue-600 text-white font-bold w-[90%] p-[3px] h-[40px] flex items-center justify-center rounded-[5px]"
->Create account</button>
-<Link href="./signIn" className="w-[90%] flex justify-end ">
-<p className="w-[90%] text-end text-blue-600">Already have a account? SignIn</p>
-</Link>
-</form>
-</div>
-        </div>
+    return (
+        <Container>
+            <Header title="Qeydiyyat" />
+            <Form onSubmit={formik.handleSubmit}>
+                <ImageSelect />
+                <Input
+                    type="text"
+                    placeholder="İstifadəçi adı"
+                    name="username"
+                    onChange={formik.handleChange}
+                    value={formik.values.username}
+                    error={formik.errors.username} 
+                />
+
+                <Input
+                    type="text"
+                    placeholder="Email ünvanı"
+                    name="email"
+                    onChange={formik.handleChange}
+                    value={formik.values.email}
+                    error={formik.errors.email}
+                />
+
+                <Input
+                    type="text"
+                    placeholder="Telefon nömrəsi"
+                    name="number"
+                    onChange={formik.handleChange}
+                    value={formik.values.number}
+                    error={formik.errors.number}
+                />
+
+                <Input
+                    type="password"
+                    placeholder="Şifrə"
+                    name="password"
+                    onChange={formik.handleChange}
+                    value={formik.values.password}
+                    error={formik.errors.password}
+                />
+
+                <Button text="Hesab yarat" type="submit" />
+                <Link href="./signIn" className="w-[90%] text-blue-600 flex justify-end ">
+                    Hesabın var? Giriş et
+                </Link>
+            </Form>
+
+        </Container>
     )
 }
 export default SignUp
