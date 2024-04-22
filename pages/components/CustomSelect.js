@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-function CustomSelect({ title, options, selectOption, field, element, header }) {
+function CustomSelect({ title, options, selectOption, field, element, header,active }) {
     const [isActive, setIsActive] = useState(false);
 
     const toggleClass = () => {
@@ -13,8 +13,8 @@ function CustomSelect({ title, options, selectOption, field, element, header }) 
     };
 
     return (
-        <div onClick={toggleClass} className={`relative transition-all duration-500 w-full h-[40px] overflow-hidden ${isActive ? "active-select" : ""}`}>
-            <div className="relative h-[40px] bg-[#1F1F1F] flex justify-between rounded border-[2px] border-[#252525] p-[5px]">
+        <div onClick={toggleClass} className={`${active===false ? "pointer-events-none bg-black" : null } relative transition-all duration-500 w-full h-[40px] overflow-hidden ${isActive ? "active-select" : ""}`}>
+            <div className={`relative h-[40px] ${active===false ? "bg-[#383838]" : "bg-[#1F1F1F]" }  flex justify-between rounded-[5px] border-[2px] border-[#252525] p-[5px]`}>
                 <h1 className='text-[#9CA3AF]'>{title}</h1>
                 <ArrowDropDownIcon className="w-[30px] text-[#9CA3AF]" />
             </div>

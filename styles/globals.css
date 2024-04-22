@@ -18,6 +18,7 @@
 
 body {
 background: #000000;
+user-select: none;
 }
 .mainslider{
   background: #8A2BE2 !important;
@@ -59,6 +60,7 @@ background: #000000;
     left: 0;
     width: 100%;
     max-height: 70% !important;
+    transition: all 1s;
   }
   .active-select ul{
     height: 100%;

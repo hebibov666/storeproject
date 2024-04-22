@@ -24,15 +24,16 @@ function SignUp() {
         number: Yup.string().required("Telefon nömrəsi daxil edin"),
         password: Yup.mixed().required("Şifrə daxil edin")
     })
+
     const formik = useFormik({
         initialValues,
         validationSchema,
         onSubmit,
+})
 
-    })
     return (
         <Container>
-            <Header title="Qeydiyyat" />
+            <Header title="Qeydiyyat" onClick={formik.handleReset} />
             <Form onSubmit={formik.handleSubmit}>
                 <ImageSelect />
                 <Input
