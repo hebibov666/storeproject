@@ -17,7 +17,7 @@
 }
 
 body {
-background: #000000;
+background: #121212;
 user-select: none;
 }
 .mainslider{
@@ -47,7 +47,7 @@ user-select: none;
 }
 
 .active-select{
-  background: black;
+  background: #121212;
  height:auto !important;
  overflow: visible;
 }
