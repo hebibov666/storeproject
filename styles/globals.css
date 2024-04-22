@@ -17,77 +17,35 @@
 }
 
 body {
-background: white;
+background: #000000;
 }
-.banner{
-  background-image: url("/bg2.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-.banner2{
-  background-image: url("/bg2.png");
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-.after::after{
-  content: "";
-  width:100%;
-  height: 300px;
-  position: absolute;
-  display: flex;
-  z-index: 0;
-  background-image: url("/bg2.png");
-  bottom: 0%;
- background-repeat: no-repeat;
- background-size: contain;
- transform: rotate(180deg);
-}
-.after::before{
-  content: "";
-  width:100%;
-  height: 300px;
-  position: absolute;
-  display: flex;
-  z-index: 0;
-  background-image: url("/bg2.png");
-  top: 0%;
- background-repeat: no-repeat;
- background-size: contain;
-}
-.after{
-  box-shadow: 3px -3px 3px 3x white;
-}
-.nouser{
-  background-image: url("/nouser.jpg");
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-.arrow{
-  width: 40px !important;
-  height: 40px !important;
-}
-.dropdown{
-  background: white !important;
-  height: 35px !important;
-  border-radius: 5px !important;
-  padding: 3px !important;
+.mainslider{
+  background: #8A2BE2 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-top-left-radius: 45px;
+  border-bottom-left-radius: 45px;
+  margin-right: 0px !important;
   display: flex !important;
   align-items: center !important;
-  color: black !important;
-  justify-content: center !important;
-  font-size: 16px !important;
+  padding-right: 30px !important;
+  overflow: visible;
 }
-.login-dropwdown{
-  background: none !important;
+.item{
+  position: absolute !important;
+  z-index: 1 !important;
+  top:0px !important;
+  left: 0px !important;
 }
-.MuiPopover-root .MuiMenu-root .MuiModal-root{
-  width: 100% !important;
-  overflow: hidden !important;
+.scroll::-webkit-scrollbar{
+  width: 5px;
 }
-.create{
-  font-family: "Roboto","Helvetica","Arial",sans-serif;
-  font-weight: 500;
+.scroll::-webkit-scrollbar-thumb{
+  background: #6647ad;
+  border-radius: 10px;
 }
-.noscroll::-webkit-scrollbar{
-  opacity: 0;
+
+.active-select{
+ height:auto !important;
+ overflow: visible;
 }
