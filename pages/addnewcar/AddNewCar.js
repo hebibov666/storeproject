@@ -2,7 +2,7 @@ import axios from "axios";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useState } from "react";
 import { useFormik } from "formik";
-import { options } from "../specification";
+import { options } from "@/lib/data";
 import CustomSelect from "../components/CustomSelect";
 import Header from "../components/PageHeader";
 import Container from "../components/Container";
@@ -36,8 +36,6 @@ function NewPost({ cars }) {
     }
    }
  
-
-console.log(options)
 const make = cars.map(car => car.brand);
 const models=cars[formik.values.make.id]?.models.map(model=>model)
     return (
