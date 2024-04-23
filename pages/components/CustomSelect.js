@@ -24,8 +24,8 @@ function CustomSelect({ title, options,selectOption,field,element,header,active}
         e.stopPropagation();
     };
     return (
-        <div onClick={toggleClass} className={`${active === false ? "pointer-events-none border-0" : null} relative w-full h-[40px] overflow-hidden ${isActive ? "active-select" : " "}`}>
-            <div className={`relative h-[40px] ${active === false ? "bg-[#3B3B3B] border-0" : "bg-[#111111]"} pl-2 flex justify-between items-center rounded-[5px] p-[5px]`}>
+        <div onClick={toggleClass} className={`${active === false ? "pointer-events-none border-0" : null} relative w-full h-[45px] overflow-hidden ${isActive ? "active-select" : " "}`}>
+            <div className={`relative h-[45px] ${active === false ? "bg-[#3B3B3B] border-0" : "bg-[#111111]"} pl-2 flex justify-between items-center rounded-[5px] p-[5px]`}>
                 <h1 className='text-[#fafafa]'>{title}</h1>
             <ExpandMoreIcon fontSize='medium' className='text-[#fafafa]'/>
             </div>
