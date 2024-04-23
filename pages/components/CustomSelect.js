@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 function CustomSelect({ title, options,selectOption,field,element,header,active}){
@@ -14,7 +14,7 @@ function CustomSelect({ title, options,selectOption,field,element,header,active}
 
     // Seçim qutusunun açılıb bağlanmasını nəzarət etmək üçün bir state.
     const [isActive, setIsActive] = useState(false);
-
+const menu=useRef()
     // Seçim qutusunun açılıb bağlanmasını təmin edən funksiya.
     const toggleClass = () => {
         setIsActive(!isActive);
@@ -24,17 +24,37 @@ function CustomSelect({ title, options,selectOption,field,element,header,active}
     const handleInputClick = (e) => {
         e.stopPropagation();
     };
+    let startY = null;
+
+function handleTouchStart(event) {
+    // Dokunma başladığında ilk y koordinatını al
+    startY = event.touches[0].clientY;
+}
+
+function handleTouchMove(event) {
+    if (!startY) return;
+
+    const currentY = event.touches[0].clientY;
+
+    // Yeni y koordinatı başlangıç y koordinatından küçükse, aşağıya doğru bir hareket var
+    if (currentY > startY) {
+       setIsActive(false)
+    }
+
+    // Yeni y koordinatını başlangıç y koordinatıyla güncelle
+    startY = currentY;
+}
     return (
         <div onClick={toggleClass} className={`${active === false ? "pointer-events-none border-0" : null} relative w-full h-[40px] overflow-hidden ${isActive ? "active-select" : " "}`}>
             <div className={`relative h-[40px] ${active === false ? "bg-[#3B3B3B] border-0" : "bg-[#111111]"} pl-2 flex justify-between items-center rounded-[5px] p-[5px]`}>
                 <h1 className='text-[#ffffffd5]'>{title}</h1>
-                <ArrowDropDownIcon style={isActive === true ? { rotate: "180deg" } : { rotate: "0deg" }} className="w-[30px] transition-all duration-500 text-[#ffffffd5]" />
+            
             </div>
-            <div className='menu-container min-[552px]:mt-[10px] h-auto'>
-                <div className='mobile bg-[#111111] flex flex-col rounded-t-[10px]'>
+            <div ref={menu} onTouchMove={handleTouchMove} onTouchStart={handleTouchStart} className='menu-container min-[552px]:mt-[10px] h-auto'>
+                <div className='mobile bg-[#111111] flex flex-col rounded-t-[15px]'>
                     <div className='flex flex-col items-center justify-center gap-[10px] h-auto pt-[10px] pb-[5px]'>
-                        <span className="min-[552px]:hidden bg-white rounded-[10px] w-[60px] h-[5px] flex"></span>
-                        <h1 className={`min-[552px]:hidden text-white select-header-title`}>{header}</h1>
+                        <span className="min-[552px]:hidden bg-[#ffffffd5] rounded-[10px] w-[60px] h-[4px] flex"></span>
+                        <h1 className={`min-[552px]:hidden text-[#ffffffd5] select-header-title`}>{header}</h1>
                         {element === "input" ? <input type="text" placeholder="Axtar..." className='outline-none w-[95%] h-[40px] min-[552px]:w-[98%] rounded-[7px] p-[5px] text-[#9CA3AF] bg-[#1F1F1F]' onClick={handleInputClick}></input> : null}
                     </div>
                     <ul className={`w-full bg-[#111111] h-auto max-h-[250px] scroll overflow-y-scroll`}>
