@@ -1,17 +1,17 @@
-function Input({ type, placeholder, name, onChange, value, error }){
+function Input({ type, placeholder, name, onChange, value, error,onlyNumber}){
     return(
         <>
         <input
         type={type}
         placeholder={placeholder}
-        className="w-full text-[#E6E6E6] bg-[#1A1A1A] outline-none p-[3px] h-[40px]  pl-2 rounded-[5px]"
+        className="number w-full text-[#ffffffd5] bg-[#111111] outline-none p-[3px] h-[40px]  pl-2 rounded-[5px]"
         name={name}
         onChange={onChange}
         value={value}
-    
+        onInput={onlyNumber} 
     >
     </input>
-    {error && <div className="w-[90%] text-start text-[#AB0003]">{error}</div>}
+    {error && <div className="w-full mt-[-10px] text-start text-[#F77462]">{error}</div>}
     </>
     )
 }

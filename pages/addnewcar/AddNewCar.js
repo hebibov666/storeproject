@@ -8,38 +8,48 @@ import Header from "../components/PageHeader";
 import Container from "../components/Container";
 import Form from "../components/FormComponent";
 import Button from "../components/ButtonComponent";
+import { cities } from "@/lib/data";
+import { years } from "@/lib/data";
+import Input from "../components/InputComponent";
 function NewPost({ cars }) {
-
-    const initialValues={
-        make: {
-            id: null,
-            name: ""
-        },
+    const make = cars.map(car => car.brand);
+   const [index,setIndex]=useState(null) //Bu state avtomobil markası seçildikdə Model seçimi üçün olan select box-da həmin markanın modellərinin yazdırılması üçün istifadə olunur
+   const initialValues={
+        make:"",
         model: "",
         fuelType: "",
         bodyType: "",
         gearBox: "",
+        city:"",
+        year:"",
+        engineSize:"",
+        engineType:null,
     }
 
+    const onSubmit=(values)=>{
+       console.log(values)
+    }
     const formik = useFormik({
         initialValues,
+        onSubmit
     });
     {/*Custom select elementlərin açılıb bağlanması üçün funksiya, .red  klassı global.css faylında yaradılıb. Elementə klik etdikdə ona red klassı əlavə olunur və select box açılır  */ }
 
 
     {/*Buradakı funksiyalar müvafiq olaraq formik-de teyin edilmiş fieldlərin dəyərini dəyişir.Hərbir funksiya  */ }
     const selectOption = (field, option, index) => {
-        if (field === "make.name") {
             formik.setFieldValue(field, option)
-            formik.setFieldValue("make.id", index)
-        } else {
-            formik.setFieldValue(field, option)
-        }
+            setIndex(index)
+
+
     }
+    const InputValue=(field,value)=>{
+formik.setFieldValue(field,value)
+    }
+const onlyNumber=(e)=>{
+    e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, '');
+}
 
-
-    const make = cars.map(car => car.brand);
-    const models = cars[formik.values.make.id]?.models.map(model => model)
     return (
         <Container>
             <Header title="Yeni elan" />
@@ -57,12 +67,12 @@ function NewPost({ cars }) {
                 {/*Avtomobil modelinin secilməsi üçün select box */}
                 <CustomSelect
                     title={formik.values.model || "Model secin"}
-                    options={models}
+                    options={cars[index]?.models.map(model => model)}
                     selectOption={selectOption}
                     field="model"
                     element="input"
                     header="Model"
-                    active={formik.values.make.id === null ? false : true}
+                    active={index === null ? false : true}
                 />
                 {/*Ban növünün secilməsi üçün select box */}
                 <CustomSelect
@@ -91,7 +101,50 @@ function NewPost({ cars }) {
                     element="h1"
                     header="Sürətlər qutusu"
                 />
-                 <Button onClick={formik.handleReset} text="Seçimi sıfırla"/>
+                     <CustomSelect
+                    title={formik.values.engineSize || "Mühərrik həcmi"}
+                    options={options.engineSize}
+                    selectOption={selectOption}
+                    field="engineSize"
+                    element="h1"
+                    header="Mühərrik həcmi"
+                />
+                <Input 
+                type="number" 
+                name="engineType"
+                value={formik.values.engineType || ""}
+                onlyNumber={onlyNumber}
+                placeholder="Mühərrik gücü"
+             onChange={formik.handleChange}
+                />
+                    <CustomSelect
+                    title={formik.values.seats || "Oturacaqların sayı"}
+                    options={options.seats}
+                    selectOption={selectOption}
+                    field="seats"
+                    element="h1"
+                    header="Oturacaqların sayı"
+                />
+                     <CustomSelect
+                    title={formik.values.year || "Buraxılış ili"}
+                    options={years}
+                    selectOption={selectOption}
+                    field="year"
+                    element="h1"
+                    header="Buraxılış ili"
+                />
+                      <CustomSelect
+                    title={formik.values.city || "Şəhər"}
+                    options={cities}
+                    selectOption={selectOption}
+                    field="city"
+                    element="h1"
+                    header="Şəhər"
+                />
+               <div className="w-full grid grid-cols-2 gap-[10px]">
+               <Button onClick={formik.handleSubmit} background="#1B8A0C " text="Əlavə et"/>
+                 <Button onClick={formik.handleReset} background="#AD0D0D" text="Seçimi sıfırla"/>
+               </div>
             </Form>
            
 

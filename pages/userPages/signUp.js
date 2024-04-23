@@ -24,7 +24,7 @@ function SignUp() {
         number: Yup.string().required("Telefon nömrəsi daxil edin"),
         password: Yup.mixed().required("Şifrə daxil edin")
     })
-
+    
     const formik = useFormik({
         initialValues,
         validationSchema,
@@ -52,6 +52,7 @@ function SignUp() {
                     onChange={formik.handleChange}
                     value={formik.values.email}
                     error={formik.errors.email}
+    
                 />
 
                 <Input
@@ -72,8 +73,8 @@ function SignUp() {
                     error={formik.errors.password}
                 />
 
-                <Button text="Hesab yarat" type="submit" />
-                <Link href="./signIn" className="w-[90%] text-blue-600 flex justify-end ">
+                <Button text="Hesab yarat" type="submit" background="#0755F1" />
+                <Link href="./signIn" className="w-full text-[#0755F1] flex justify-end ">
                     Hesabın var? Giriş et
                 </Link>
             </Form>

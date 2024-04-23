@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 function CustomSelect({ title, options,selectOption,field,element,header,active}){
 {/*
   // title: Seçim qutusunun üst hissəsində göstəriləcək başlıq mətni.
@@ -27,8 +26,8 @@ function CustomSelect({ title, options,selectOption,field,element,header,active}
     return (
         <div onClick={toggleClass} className={`${active === false ? "pointer-events-none border-0" : null} relative w-full h-[40px] overflow-hidden ${isActive ? "active-select" : " "}`}>
             <div className={`relative h-[40px] ${active === false ? "bg-[#3B3B3B] border-0" : "bg-[#111111]"} pl-2 flex justify-between items-center rounded-[5px] p-[5px]`}>
-                <h1 className='text-[#ffffffd5]'>{title}</h1>
-            
+                <h1 className='text-[#fafafa]'>{title}</h1>
+            <ExpandMoreIcon fontSize='medium' className='text-[#fafafa]'/>
             </div>
             <div className='menu-container min-[552px]:mt-[10px] h-auto'>
                 <div className='mobile bg-[#111111] flex flex-col rounded-t-[15px]'>
