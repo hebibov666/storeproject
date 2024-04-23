@@ -11,7 +11,7 @@ function Input({ type, placeholder, name, onChange, value, error,onlyNumber}){
         onInput={onlyNumber} 
     >
     </input>
-    {error && <div className="w-full mt-[-10px] text-start text-[#F77462]">{error}</div>}
+    {error && <div className="w-full mt-[-10px] pl-[2px] text-start text-[#F77462]">{error}</div>}
     </>
     )
 }

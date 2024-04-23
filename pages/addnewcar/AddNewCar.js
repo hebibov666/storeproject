@@ -29,9 +29,15 @@ function NewPost({ cars }) {
     const onSubmit=(values)=>{
        console.log(values)
     }
+    const handleResetWithCustomBehavior = (e) => {
+e.preventDefault()
+        setIndex(null); //Form reset olduqda index-in null dəyərinə qaytarılması üçün, bununla secilen avtomobil modelləridə sıfırlanır
+        formik.resetForm(); //
+    };
     const formik = useFormik({
         initialValues,
-        onSubmit
+        onSubmit,
+        handleReset:handleResetWithCustomBehavior
     });
     {/*Custom select elementlərin açılıb bağlanması üçün funksiya, .red  klassı global.css faylında yaradılıb. Elementə klik etdikdə ona red klassı əlavə olunur və select box açılır  */ }
 
@@ -43,9 +49,7 @@ function NewPost({ cars }) {
 
 
     }
-    const InputValue=(field,value)=>{
-formik.setFieldValue(field,value)
-    }
+   
 const onlyNumber=(e)=>{
     e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, '');
 }
@@ -143,7 +147,7 @@ const onlyNumber=(e)=>{
                 />
                <div className="w-full grid grid-cols-2 gap-[10px]">
                <Button onClick={formik.handleSubmit} background="#1B8A0C " text="Əlavə et"/>
-                 <Button onClick={formik.handleReset} background="#AD0D0D" text="Seçimi sıfırla"/>
+                 <Button onClick={handleResetWithCustomBehavior} background="#AD0D0D" text="Məlumatları sıfırla"/>
                </div>
             </Form>
            
